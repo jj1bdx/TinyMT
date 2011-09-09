@@ -4,6 +4,8 @@ A 2^127-1 period PRNG
 
 ## Notes
 
+* TinyMT-src and TinyMT-Jump both pieces of codes are merged.
+
 * This git repository includes mods for FreeBSD 8. For compilation on FreeBSD 8,
   gcc 4.5 (port lang/gcc45) is required. Also the following entry should be added to
   <code>/etc/libmap.conf</code>:
