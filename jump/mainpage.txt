@@ -1,0 +1,26 @@
+/**
+ * \mainpage
+ *
+ * This is status jump program for Tiny Mersenne Twister.
+ *
+ * Jump means changing internal state vector to n steps
+ * after current state without generating numbers.
+ *
+ * The following function are available.
+ * - tinymt32_jump(): parameter generator for 32-bit pseudo random number
+ * generators.
+ * - tinymt64_jump(): parameter generator for 64-bit pseudo random number
+ * generators.
+ *
+ * @author Mutsuo Saito, (saito@math.sci.hiroshima-u.ac.jp) Hiroshima University
+ * @author Makoto Matsumoto, The University of Tokyo
+ *
+ * @date 2011-6-21
+ *
+ * Copyright (C) 2011 Mutsuo Saito, Makoto Matsumoto, Hiroshima
+ * University and The University of Tokyo.
+ * All rights reserved.
+ *
+ * The 3-clause BSD License is applied to this software.
+ * \verbinclude LICENSE.txt
+ */
