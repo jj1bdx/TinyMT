@@ -2,7 +2,7 @@
 
 #DDEBUG = -O0 -g -ggdb -DDEBUG=1
 
-CC = gcc45 -Wall -O3 -std=c99 -Wmissing-prototypes $(DDEBUG)
+CC = gcc46 -Wall -O3 -std=c99 -Wmissing-prototypes $(DDEBUG)
 #CC = gcc -Wall -O3 -std=c99 -Wmissing-prototypes $(DDEBUG)
 #CC = icc -Wall -O3 -std=c99 -Wmissing-prototypes $(DDEBUG)
 

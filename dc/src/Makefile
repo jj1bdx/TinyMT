@@ -9,11 +9,11 @@ OPTLIB = -lgmp
 INC = -I../include
 
 #CC = gcc -Wall -O3 -std=c99 -Wmissing-prototypes -Wextra $(DDEBUG)
-CC = gcc45 -Wall -O3 -std=c99 -Wmissing-prototypes -Wextra $(DDEBUG)
+CC = gcc46 -Wall -O3 -std=c99 -Wmissing-prototypes -Wextra $(DDEBUG)
 
 CPPOPT = -Wall -Wextra -O3 $(M64) $(INC) \
 	$(DDEBUG) -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS
-CPP = g++45 $(CPPOPT)
+CPP = g++46 $(CPPOPT)
 #CPP = g++ $(CPPOPT)
 #CPP = icc $(CPPOPT)
 
