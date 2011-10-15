@@ -64,6 +64,7 @@ bool parse_opt(int argc, char **argv) {
 	    ::is_reverse = true;
 	    break;
 	case 'b':
+	    errno = 0; // this is a kludge
 	    bit = strtol(optarg, NULL, 10);
 	    if (errno || (bit != 32 && bit != 64)) {
 		error = true;
@@ -90,12 +91,14 @@ bool parse_opt(int argc, char **argv) {
     }
     if (!error) {
 	if (is_reverse) {
+	    errno = 0; // this is a kludge
 	    p1 = strtoull(argv[0], NULL, 0);
 	    if (errno) {
 		error = true;
 		cerr << "id must be a number" << endl;
 	    }
 	} else {
+	    errno = 0; // this is a kludge
 	    p1 = strtoull(argv[0], NULL, 16);
 	    if (errno) {
 		error = true;
@@ -105,12 +108,14 @@ bool parse_opt(int argc, char **argv) {
     }
     if (!error && argc >= 2) {
 	if (is_reverse) {
+	    errno = 0; // this is a kludge
 	    p2 = strtoull(argv[1], NULL, 0);
 	    if (errno) {
 		error = true;
 		cerr << "seq must be a number" << endl;
 	    }
 	} else {
+	    errno = 0; // this is a kludge
 	    p2 = strtoull(argv[1], NULL, 16);
 	    if (errno) {
 		error = true;
