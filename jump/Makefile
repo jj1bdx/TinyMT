@@ -2,6 +2,7 @@
 
 #DDEBUG = -O0 -g -ggdb -DDEBUG=1
 #M64 = -m64 -L/usr/local/64bit/lib -I/usr/local/64bit/include
+INC = -L/usr/local/include/NTL
 
 
 CC = gcc -Wall -O3 -std=c99 -Wmissing-prototypes -Wextra \
@@ -10,12 +11,12 @@ CC = gcc -Wall -O3 -std=c99 -Wmissing-prototypes -Wextra \
 
 CPPOPT = -Wall -Wextra -O3 $(M64) $(INC) -I../tinymt \
 	$(DDEBUG) -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS
-CPP = g++ $(CPPOPT)
+CPP = g++46 $(CPPOPT)
 
 # comment out next line if you are using NTL with gf2x
 # NTL_OPT = -lgf2x
 # comment out next line if you are using NTL with gmp
-# NTL_OPT = -lgmp
+NTL_OPT = -lgmp
 
 FILES = Makefile \
 	doxygen.cfg \

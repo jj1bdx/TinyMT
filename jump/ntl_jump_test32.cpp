@@ -1,25 +1,25 @@
 #include <stdint.h>
 #include <inttypes.h>
-#include <ntl/GF2X.h>
-#include <ntl/ZZ.h>
-#include <ntl/vec_GF2.h>
+#include <NTL/GF2X.h>
+#include <NTL/ZZ.h>
+#include <NTL/vec_GF2.h>
 #include <stdio.h>
 #include <stdlib.h>
 extern "C" {
-#include "tinymt32c.h"
+#include "tinymt32.h"
 }
 
 using namespace NTL;
 using namespace std;
 
-static void tinymt32_add(tinymt32c_t *dist, const tinymt32c_t *src)
+static void tinymt32_add(TINYMT32_T *dist, const TINYMT32_T *src)
 {
     for (int i = 0; i < 4; i++) {
 	dist->status[i] ^= src->status[i];
     }
 }
 
-void minpoly(GF2X & poly, tinymt32c_t * tiny) {
+void minpoly(GF2X & poly, TINYMT32_T * tiny) {
     tinymt32_init(tiny, 3317);
     vec_GF2 vec;
     int mexp = 127;
@@ -58,7 +58,7 @@ void read_pols(GF2X & poly, char str[])
     }
 }
 
-int check_tiny(tinymt32c_t * a, tinymt32c_t * b)
+int check_tiny(TINYMT32_T * a, TINYMT32_T * b)
 {
     int check = 0;
     for (int i = 0; i < 10; i++) {
@@ -77,13 +77,13 @@ int check_tiny(tinymt32c_t * a, tinymt32c_t * b)
     return check;
 }
 
-void tinymt32_jump(tinymt32c_t & tiny,
+void tinymt32_jump(TINYMT32_T & tiny,
 		   ZZ & jump_count,
 		   GF2X & poly) {
     GF2X x(1, 1);
     GF2X y;
     PowerMod(y, x, jump_count, poly);
-    tinymt32c_t result;
+    TINYMT32_T result;
     result = tiny;
     result.status[0] = 0;
     result.status[1] = 0;
@@ -100,10 +100,10 @@ void tinymt32_jump(tinymt32c_t & tiny,
 
 }
 
-void test(tinymt32c_t * tiny, GF2X & poly, uint32_t seed)
+void test(TINYMT32_T * tiny, GF2X & poly, uint32_t seed)
 {
-    tinymt32c_t new_tiny_z;
-    tinymt32c_t * new_tiny = &new_tiny_z;
+    TINYMT32_T new_tiny_z;
+    TINYMT32_T * new_tiny = &new_tiny_z;
     const uint64_t test_count = 126;
 
     tinymt32_init(tiny, seed);
@@ -135,7 +135,7 @@ int main(int argc, char * argv[]) {
     }
     GF2X poly1;
     GF2X poly2;
-    tinymt32c_t tiny;
+    TINYMT32_T tiny;
     tiny.mat1 = strtoul(argv[2], NULL, 16);
     tiny.mat2 = strtoul(argv[3], NULL, 16);
     tiny.tmat = strtoul(argv[4], NULL, 16);
