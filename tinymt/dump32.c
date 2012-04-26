@@ -26,7 +26,7 @@
 void state_dump(tinymt32_t *);
 
 void state_dump(tinymt32_t *r) {
-	printf("status[0] = %u, status[1] = %u, status[2] = %u, status[3] = %u\n",
+	printf("status: %u %u %u %u\n",
 		r->status[0], r->status[1], r->status[2], r->status[3]);
 }	
 
@@ -50,9 +50,8 @@ int main(int argc, char * argv[]) {
     printf(" seed = %d\n", seed);
     tinymt32_init(&tinymt, seed);
     state_dump(&tinymt);
-    printf("32-bit unsigned integers r, where 0 <= r < 2^32\n");
     for (int i = 0; i < 100; i++) {
-	    printf("%10"PRIu32"\n", tinymt32_generate_uint32(&tinymt));
+	    printf("%"PRIu32"\n", tinymt32_generate_uint32(&tinymt));
 	    state_dump(&tinymt);
     }
 }
