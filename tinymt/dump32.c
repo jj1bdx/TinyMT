@@ -50,6 +50,9 @@ int main(int argc, char * argv[]) {
     printf(" seed = %d\n", seed);
     tinymt32_init(&tinymt, seed);
     state_dump(&tinymt);
+    printf("mat1 %u ", tinymt.mat1);
+    printf("mat2 %u ", tinymt.mat2);
+    printf("tmat %u\n", tinymt.tmat);
     for (int i = 0; i < 100; i++) {
 	    printf("%"PRIu32"\n", tinymt32_generate_uint32(&tinymt));
 	    state_dump(&tinymt);
