@@ -4,7 +4,7 @@ A 2^127-1 period PRNG
 
 ## Notes
 
-* TinyMT-src and TinyMT-Jump both pieces of codes are merged.
+* TinyMT-src and TinyMT-Jump (1.1) both pieces of codes are merged.
 
 * This git repository includes mods for FreeBSD 8. For compilation on FreeBSD 8,
   gcc 4.5 or later is required.
