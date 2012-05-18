@@ -91,12 +91,17 @@ TinyMT-src-xxx
     </ol>
 
     <h3>description of jump function</h3>
+<pre>
+void tinymt32_jump(tinymt32c_t *tiny,
+                   uint64_t lower_step,
+                   uint64_t upper_step,
+                   const char * poly_str);
+</pre>
     <dl>
       <dt>
-	void tinymt32_jump(tinymt32c_t *tiny,<br/>
-                           uint64_t lower_step,<br/>
-                           uint64_t upper_step,<br/>
-                           const char * poly_str);
+	This function changes the internal state of tinymt32 to
+	N (specified by lower_step and upper_step) steps forwards.
+	N is between 0 and 2<sup>128</sup>-1.
       </dt>
       <dd><b>tiny</b> is a structure of type tinymt32_t.
 	<b>tiny</b> must be initialized.
@@ -109,6 +114,47 @@ TinyMT-src-xxx
       <dd><b>poly_str</b> is a string of characteristic polynomial,
 	which is in the first column of outputs of tinymt32dc.
 	</dd>
+    </dl>
+<pre>
+void calculate_jump_polynomial(f2_polynomial *jump_poly,
+                               uint64_t lower_step,
+                               uint64_t upper_step,
+                               const char * poly_str);
+</pre>
+    <dl>
+      <dt>
+	This function calculates <b>jump polynomial</b> from
+	the characteristic polynomial, lower_step and upper_step.
+	This function is time consuming.
+      </dt>
+      <dd><b>jump_polynomial</b> will be overwritten by a calculated
+	jump polynomial.
+      </dd>
+      <dd><b>lower_step</b> and <b>upper_step</b>
+	specifies how many steps tinymt jumps.
+      Users can specify from zero to 2<sup>128</sup>-1 steps,
+      using two 64-bit arguments.</dd>
+      <dd><b>poly_str</b> is a string of characteristic polynomial,
+	which is in the first column of outputs of tinymt32dc.
+	</dd>
+    </dl>
+<pre>
+void tinymt32_jump_by_polynomial(tinymt32_t *tiny,
+				 f2_polynomial * jump_poly);
+</pre>
+    <dl>
+      <dt>
+	This function changes the internal state of tinymt32 to
+	some steps froward using <b>jump_poly</b>.
+	<b>jump_poly</b> must be calculated
+	using the characteristic polynomial of <b>tiny</b>
+	before this function is called.
+	This function is faster than calculate_jump_polynomial.
+      </dt>
+      <dd><b>tiny</b> is a structure of type tinymt32_t.
+	<b>tiny</b> must be initialized.
+	<b>tiny</b> is overwritten by new jumped state.
+      </dd>
     </dl>
 
     <h3>Sample program</h3>

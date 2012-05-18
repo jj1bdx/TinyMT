@@ -1,7 +1,7 @@
 /**
  * @file jump64.c
  *
- * @brief jump function for tinymt32
+ * @brief jump function for tinymt64
  *
  * Jump function changes the internal state vector of tinymt64
  * pseudorandom number generator to the state which is N step after
@@ -11,7 +11,7 @@
  * @author Mutsuo Saito (Hiroshima University)
  * @author Makoto Matsumoto (The University of Tokyo)
  *
- * Copyright (C) 2011 Mutsuo Saito, Makoto Matsumoto,
+ * Copyright (C) 2011, 2012 Mutsuo Saito, Makoto Matsumoto,
  * Hiroshima University and University of Tokyo.
  * All rights reserved.
  *
@@ -47,29 +47,33 @@ static void tinymt64_add(tinymt64_t *dest, const tinymt64_t *src)
 		   uint64_t upper_step,
 		   const char * poly_str)
 {
-    polynomial charcteristic;
-    polynomial jump_poly;
-    polynomial tee;
+    f2_polynomial jump_poly;
 
-    strtop(&charcteristic, poly_str);
-    tee.ar[0] = 2;
-    tee.ar[1] = 0;
-    polynomial_power_mod(&jump_poly,
-			 &tee,
-			 lower_step,
-			 upper_step,
-			 &charcteristic);
-#if defined(DEBUG)
-    printf("jump_poly:");
-    printf("%016"PRIx64" %016"PRIx64"\n", jump_poly.ar[0], jump_poly.ar[1]);
-#endif
+    calculate_jump_polynomial(
+	&jump_poly, lower_step, upper_step, poly_str);
+    tinymt64_jump_by_polynomial(tiny, &jump_poly);
+}
+
+/**
+ * jump using the jump polynomial.
+ * This function is not as time consuming as calculating jump polynomial.
+ * This function can use multiple time for the tinymt64 structure.
+ * @param tiny tinymt64 structure, overwritten by new state after calling
+ * this function.
+ * @param jump_poly the jump polynomial calculated by
+ * tinymt64_calculate_jump_polynomial.
+ */
+void tinymt64_jump_by_polynomial(tinymt64_t *tiny,
+		   f2_polynomial * jump_poly)
+{
     tinymt64_t work_z;
     tinymt64_t * work = &work_z;
     *work = *tiny;
-    work->status[0] = 0;
-    work->status[1] = 0;
+    for (int i = 0; i < 2; i++) {
+	work->status[i] = 0;
+    }
 
-    uint64_t x64 = jump_poly.ar[0];
+    uint64_t x64 = jump_poly->ar[0];
     for (int i = 0; i < 64; i++) {
 	if ((x64 & 1) != 0) {
 	    tinymt64_add(work, tiny);
@@ -77,7 +81,7 @@ static void tinymt64_add(tinymt64_t *dest, const tinymt64_t *src)
 	tinymt64_next_state(tiny);
 	x64 = x64 >> 1;
     }
-    x64 = jump_poly.ar[1];
+    x64 = jump_poly->ar[1];
     while (x64 != 0) {
 	if ((x64 & 1) != 0) {
 	    tinymt64_add(work, tiny);

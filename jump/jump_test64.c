@@ -75,6 +75,50 @@ void test(tinymt64_t * tiny, const char * poly_str, uint64_t seed)
 	    return;
 	}
     }
+    /* one polynomial two jump */
+    f2_polynomial jump_poly;
+    f2_polynomial jump_poly2;
+    for (int index = 0; index < 3; index++) {
+	test_count = test[index];
+	printf("jump %"PRId64"[0000000000000000%016"PRIx64"]\n",
+	       test_count, test_count);
+	*new_tiny = *tiny;
+	calculate_jump_polynomial(&jump_poly,
+				  test_count, 0, poly_str);
+	calculate_jump_polynomial(&jump_poly2,
+				  test_count * 2, 0, poly_str);
+	tinymt64_jump_by_polynomial(new_tiny, &jump_poly);
+	tinymt64_jump_by_polynomial(new_tiny, &jump_poly);
+	tinymt64_jump_by_polynomial(tiny, &jump_poly2);
+	if (check_tiny(new_tiny, tiny)) {
+	    return;
+	}
+    }
+    /* one polynomial two jump (minus jump)*/
+    uint64_t test_count2;
+    for (int index = 0; index < 3; index++) {
+	test_count = UINT64_C(0xffffffffffffffff) - test[index];
+	test_count2 = UINT64_C(0xffffffffffffffff) - 2 * test[index];
+	printf("jump (period - %"PRId64") [7fffffffffffffff%016"PRIx64"]\n",
+	       test[index], test_count);
+	printf("jump (period - %"PRId64") [7fffffffffffffff%016"PRIx64"]\n",
+	       test[index] * 2, test_count2);
+	*new_tiny = *tiny;
+	calculate_jump_polynomial(&jump_poly,
+				  test_count,
+				  UINT64_C(0x7fffffffffffffff),
+				  poly_str);
+	calculate_jump_polynomial(&jump_poly2,
+				  test_count2,
+				  UINT64_C(0x7fffffffffffffff),
+				  poly_str);
+	tinymt64_jump_by_polynomial(new_tiny, &jump_poly);
+	tinymt64_jump_by_polynomial(new_tiny, &jump_poly);
+	tinymt64_jump_by_polynomial(tiny, &jump_poly2);
+	if (check_tiny(new_tiny, tiny)) {
+	    return;
+	}
+    }
 }
 
 int main(int argc, char * argv[]) {

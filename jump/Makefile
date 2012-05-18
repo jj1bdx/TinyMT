@@ -2,12 +2,12 @@
 
 #DDEBUG = -O0 -g -ggdb -DDEBUG=1
 #M64 = -m64 -L/usr/local/64bit/lib -I/usr/local/64bit/include
-INC = -L/usr/local/include/NTL
 
 
 CC = gcc -Wall -O3 -std=c99 -Wmissing-prototypes -Wextra \
 	-msse3  \
 	-L. -I../tinymt $(M64) $(DDEBUG) $(DPG)
+INC = -L/usr/local/include/NTL
 
 CPPOPT = -Wall -Wextra -O3 $(M64) $(INC) -I../tinymt \
 	$(DDEBUG) -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS
@@ -28,25 +28,28 @@ FILES = Makefile \
 	jump_test64.c \
 	mainpage.txt \
 	ntl_jump_test32.cpp \
-	polynomial.c \
-	polynomial.h \
+	f2-polynomial.c \
+	f2-polynomial.h \
 	readme.html \
 	readme-jp.html \
 	sample.c
 
-VERSION = 1.0
+VERSION = 1.1
 DIR = TinyMTJump-src-${VERSION}
 
 all: jump_test32 jump_test64
 
-jump_test32: jump_test32.c ../tinymt/tinymt32.o polynomial.o jump32.o
-	${CC} -o $@ jump_test32.c ../tinymt/tinymt32.o polynomial.o jump32.o
+jump_test32: jump_test32.c ../tinymt/tinymt32.o f2-polynomial.o jump32.o
+	${CC} -o $@ jump_test32.c ../tinymt/tinymt32.o f2-polynomial.o jump32.o
 
-jump_test64: jump_test64.c ../tinymt/tinymt64.o polynomial.o jump64.o
-	${CC} -o $@ jump_test64.c ../tinymt/tinymt64.o polynomial.o jump64.o
+jump_test64: jump_test64.c ../tinymt/tinymt64.o f2-polynomial.o jump64.o
+	${CC} -o $@ jump_test64.c ../tinymt/tinymt64.o f2-polynomial.o jump64.o
 
 ntl_jump_test32: ntl_jump_test32.cpp ../tinymt/tinymt32.o
 	${CPP} -o $@ ntl_jump_test32.cpp ../tinymt/tinymt32.o -lntl ${NTL_OPT}
+
+sample: sample.c ../tinymt/tinymt32.o f2-polynomial.o jump32.o
+	${CC} -o $@ sample.c ../tinymt/tinymt32.o f2-polynomial.o jump32.o
 
 doc: mainpage.txt doxygen.cfg
 	doxygen doxygen.cfg

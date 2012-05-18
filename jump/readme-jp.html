@@ -78,18 +78,53 @@ TinyMT-src-xxx
     </ol>
 
     <h3>関数の説明</h3>
+<pre>
+void tinymt32_jump(tinymt32c_t *tiny,
+                   uint64_t lower_step,
+                   uint64_t upper_step,
+                   const char * poly_str);
+</pre>
     <dl>
-      <dt>
-	void tinymt32_jump(tinymt32c_t *tiny,<br/>
-                           uint64_t lower_step,<br/>
-                           uint64_t upper_step,<br/>
-                           const char * poly_str);
+      <dt>この関数はtinymt32の内部状態をlower_step と upper_step で表される
+      0から2<sup>128</sup>-1の範囲内の任意のステップ先にジャンプさせます。
       </dt>
       <dd>tiny は状態をjumpさせるtinymt32_t 型の構造体です。
 	  tiny は初期化をしてある必要があります。jump 後の状態で上書きされます。</dd>
       <dd>lower_step と upper_step は何個先の状態にjumpするかを示します。</dd>
       <dd>poly_str は tinymt32dc の出力のパラメータセットの中のcharacteristic
 	カラムを文字列として渡します。</dd>
+    </dl>
+<pre>
+void calculate_jump_polynomial(f2_polynomial *jump_poly,
+                               uint64_t lower_step,
+                               uint64_t upper_step,
+                               const char * poly_str);
+</pre>
+      <dt>この関数は、特性多項式とlower_step, upper_stepからジャンプ多項式を計算します。
+	この関数の実行にはやや時間がかかります。ジャンプ多項式を一度求めたら、それを複数回
+	使用するとよいでしょう。ただし、特性多項式が異なる場合は、ジャンプ多項式を計算し
+	なおす必要があります。
+      </dt>
+      <dd>jump_poly には計算結果のジャンプ多項式が入ります。</dd>
+      <dd>lower_step と upper_step は何個先の状態にjumpするかを示します。</dd>
+      <dd>poly_str は tinymt32dc の出力のパラメータセットの中のcharacteristic
+	カラムを文字列として渡します。</dd>
+    </dl>
+
+<pre>
+void tinymt32_jump_by_polynomial(tinymt32_t *tiny,
+				 f2_polynomial * jump_poly);
+</pre>
+    <dl>
+      <dt>この関数は計算済みのジャンプ多項式を使って、tinymt32の内部状態をジャンプさせます。
+	ジャンプ多項式の計算よりもこの関数によるジャンプの方が速いので、多項式を何度も
+	計算するよりこの関数を複数回実行した方が速くなります。
+      </dt>
+      <dd>tiny は状態をjumpさせるtinymt32_t 型の構造体です。
+	  tiny は初期化をしてある必要があります。jump 後の状態で上書きされます。</dd>
+      <dd>jump_polyはcalculate_jump_polynomial関数で計算したジャンプ多項式です。
+	ここで使用するtinyの特性多項式を使って計算したジャンプ多項式でなければなりません。
+      </dd>
     </dl>
 
     <h3>サンプルプログラム</h3>
